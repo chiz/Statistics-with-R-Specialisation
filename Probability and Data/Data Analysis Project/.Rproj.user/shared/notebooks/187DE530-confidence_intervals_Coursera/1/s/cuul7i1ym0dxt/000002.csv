@@ -1,0 +1,2 @@
+"0","params <- ames %>%"
+"0","  summarise(mu = mean(area))"

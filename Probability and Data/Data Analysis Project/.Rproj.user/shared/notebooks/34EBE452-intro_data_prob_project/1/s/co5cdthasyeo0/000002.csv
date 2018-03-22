@@ -1,0 +1,3 @@
+"0","city_dweller_data<- brfss2013%>%"
+"0","  filter(citydweller==""City dweller"")"
+"0","ggplot(city_dweller_data,aes(x=X_rfhlth)) + geom_bar()"

@@ -1,0 +1,4 @@
+"0","summary_q3<-brfss_cleaned_q3%>%group_by(X_imprace, sex, X_rfhlth) %>%"
+"0","  summarise(total=n())%>%"
+"0","  mutate(percentage=total/sum(total)*100)"
+"0","summary_q3"

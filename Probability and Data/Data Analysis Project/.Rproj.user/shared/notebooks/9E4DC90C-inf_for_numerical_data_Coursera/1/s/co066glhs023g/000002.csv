@@ -1,0 +1,10 @@
+"0","inference(y = weight, x = habit, data = nc, statistic = ""mean"", type = ""ci"", "
+"0","          method = ""theoretical"", order = c(""smoker"",""nonsmoker""))"
+"1","Response variable: numerical, Explanatory variable: categorical (2 levels)
+"
+"1","n_smoker = 126, y_bar_smoker = 6.8287, s_smoker = 1.3862
+"
+"1","n_nonsmoker = 873, y_bar_nonsmoker = 7.1443, s_nonsmoker = 1.5187
+"
+"1","95% CI (smoker - nonsmoker): (-0.5803 , -0.0508)
+"

@@ -1,0 +1,3 @@
+"0","brfss_other<-brfss_cleaned_q3 %>% filter(X_imprace==""Other race, Non-Hispanic"") "
+"0","table_other<- table(brfss_other$sex,  brfss_other$genhlth)"
+"0","mosaicplot(table_other, main=""General Health for Male and Female Other"", color = TRUE, margin=TRUE)"

@@ -1,0 +1,2 @@
+"0","samp1 <- ames %>%"
+"0","  sample_n(size = 50)"

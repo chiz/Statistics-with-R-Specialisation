@@ -1,0 +1,3 @@
+"0","brfss_asian<-brfss_cleaned_q3 %>% filter(X_imprace==""Asian, Non-Hispanic"") "
+"0","table_asian<- table(brfss_asian$sex,  brfss_asian$genhlth)"
+"0","mosaicplot(table_asian, main=""General Health for Male and Female Asians"", color = TRUE, margin=TRUE)"

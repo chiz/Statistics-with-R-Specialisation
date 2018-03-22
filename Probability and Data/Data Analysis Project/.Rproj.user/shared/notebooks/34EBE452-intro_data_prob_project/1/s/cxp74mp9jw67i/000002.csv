@@ -1,0 +1,2 @@
+"0","brfss_cleaned%>% group_by(X_educag)%>%"
+"0","  summarise(total=n())"

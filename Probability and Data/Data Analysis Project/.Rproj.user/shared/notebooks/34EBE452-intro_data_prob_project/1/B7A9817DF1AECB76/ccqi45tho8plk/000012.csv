@@ -1,0 +1,2 @@
+"0","#Storing number of healthy people for city dwellers"
+"0","city_success<- as.numeric(city_dweller_summary_total[1,2])"

@@ -1,0 +1,17 @@
+"0","inference(y=marital, x= whitemom, data=nc, type=""ht"", method = ""theoretical"","
+"0","          alternative = ""less"", statistic = ""proportion"", success = ""married"", null=0)"
+"1","Response variable: categorical (2 levels, success: married)
+"
+"1","Explanatory variable: categorical (2 levels) 
+"
+"1","n_not white = 284, p_hat_not white = 0.6408
+"
+"1","n_white = 713, p_hat_white = 0.2847
+"
+"1","H0: p_not white =  p_white
+"
+"1","HA: p_not white < p_white
+"
+"1","z = 10.4245
+"
+"1","p_value = 1"

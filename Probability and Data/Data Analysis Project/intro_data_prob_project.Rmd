@@ -1,0 +1,342 @@
+---
+title: "Exploring the BRFSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(reshape)
+library(knitr)
+```
+
+### Load data
+
+Loading data:
+
+```{r load-data}
+load("brfss2013.RData")
+```
+
+* * *
+
+## Part 1: Data
+
+The BRFSS is an observation project. Therefore, it is not possible to find out causality as it is not a controlled experiment and there is no random assignment.
+
+All 50 states, the District of Columbia, Puerto Rico, and Guam collect data annually and American Samoa, Federated States of Micronesia, and Palau collect survey data over a limited point- in-time (usually one to three months). Therefore, we have a *representative sample* including all US states and territories.
+
+The BRFSS counducts telephone interviews using *random* selection. The BRFSS also conducts cellphone interviews to include residences that do not have a landline number. 
+
+There is a **representative** sample from across the country and covering people with both landlines and cellphones. The samples are randomly selected by the researchers in each *"state"*. Therefore, there is random sampling. We can safely conclude that the study is **generalizable**.
+
+The only reservations are:
+
+* Citizens without cellphones and landlines may not be covered.
+* Homeless people may not be covered or hermits and monks living in the forest.
+
+* * *
+
+## Part 2: Research questions
+
+**Research quesion 1:**
+
+Are city dwellers healthier than their suburban and rural counterparts? 
+
+This question interests me because I assume that being outside the frantic hustle and bustle of city life outside work hours is conducive to mental and physical health. Although, it isn't the only factor. We may be able to draw correlations, we cannot establish causality as it is not a controlled experiment.
+
+**Research quesion 2:**
+Is there a difference in proportion of current smokers who are male graduates, female graduate, male non-graduates and female non-graduate?
+
+My initial assumption is that the group with the largest proportion of smokers would be male non-graduates followed by male graduates. An understanding of which demographic is likely to be a current smoker would enable us to create specifically tailored health outreach programs.
+
+**Research quesion 3:**
+Is there any relation between general health and race,sex?
+
+It would be interesting to understand how is the general health of people of different races, sex This might inform deeper experimental studies to understand what are the causes for the good and bad overall health for people belonging to a cerain race, sex
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+**Research quesion 1:**
+
+For this question, we make use of the following variables:
+
+* *mscode*: Metropolitan Status Code.
+* Calculated variable *_rfhlth*: Adults With Good Or Better Health.
+
+The metropolitan status code has 5 levels
+
+1. In the center city of an MSA	
+* Outside the center city of an MSA but inside the county containing the center city	
+* Inside a suburban county of the MSA	
+* In an MSA that has no center city	
+* Not in an MSA
+
+We classify level 1 and 2 as city dweller and the others as not a city dweller. We, therefore create a new variable called *citydweller*. 
+
+Let us first explore *mscode* a bit.
+```{r values table for mscode}
+brfss2013%>% group_by(mscode) %>%
+  summarise(total=n())
+
+```
+
+Create a new variable citydweller
+
+```{r creating citydweller}
+mscode_levels<-levels(brfss2013$mscode)
+city1<-mscode_levels[1]
+city2<-mscode_levels[2]
+brfss2013<-brfss2013%>%
+  mutate(citydweller = ifelse(mscode==city1|mscode==city2,"City dweller","Not a city dweller") )
+#Verification
+brfss2013%>% filter(mscode==city1|mscode==city2)%>%
+  group_by(citydweller)%>%
+  summarise(total=n())
+```
+
+
+First, we find out some summary statistics for city dweller vs not a city dweller.
+```{r creating bar graph and summary statistics for city dweller vs not a city dweller}
+ggplot(data=brfss2013,aes(x=citydweller))+geom_bar()+ ggtitle("Bar diagram showing whether a person lives in the city")
+brfss2013[!is.na(brfss2013$citydweller),]%>%group_by(citydweller)%>%
+  summarise(total=n())
+```
+For our summary statistics, we filtered out NA. There is an even split between city dwellers and not a city dwellers.
+
+Now, we construct a bar plot concerning the health of a city dweller.
+```{r Bar plot for the health of city dwellers}
+city_dweller_data<- brfss2013%>%
+  filter(citydweller=="City dweller")
+ggplot(city_dweller_data,aes(x=X_rfhlth)) + geom_bar()
+city_dweller_summary_total<-city_dweller_data[!is.na(city_dweller_data$X_rfhlth),] %>% group_by(X_rfhlth) %>%
+  summarise(total= n())
+city_dweller_summary_total
+total_city_dweller= sum(!is.na(city_dweller_data$X_rfhlth))
+city_dweller_data[!is.na(city_dweller_data$X_rfhlth),] %>% group_by(X_rfhlth) %>%
+  summarise(proportion= n()/total_city_dweller)
+#Storing number of healthy people for city dwellers
+city_success<- as.numeric(city_dweller_summary_total[1,2])
+
+```
+Here, we see again that the proportion of healthy city dwellers is also around 8 in 10.
+
+Now, let us investigate for non-city dwellers:
+```{r Bar plot and summary statistic for non-city dwellers}
+non_city_dweller_data<-brfss2013%>%
+  filter(citydweller=="Not a city dweller")
+ggplot(non_city_dweller_data, aes(x=X_rfhlth)) +geom_bar() + ggtitle("Bar plot concerning health of non-city dwellers")
+non_city_total_summary<-non_city_dweller_data[!is.na(non_city_dweller_data$X_rfhlth),]%>% group_by(X_rfhlth) %>%
+  summarise(total=n())
+non_city_total_summary
+total_non_city_dweller= sum(!is.na(non_city_dweller_data$X_rfhlth))
+non_city_dweller_data[!is.na(non_city_dweller_data$X_rfhlth),]%>% group_by(X_rfhlth) %>%
+  summarise(proportion=n()/total_non_city_dweller)
+#Storing number of healthy people for non-city dwellers
+non_city_success<- as.numeric(non_city_total_summary[1,2])
+```
+It seems non-city dwellers have a slightly lower proportion of healthy individuals compared to city dwellers i.e 0.784438 (non-city) vs 0.8098015 (city). 
+
+Our hypothesis test is as follows:
+* H0 : The proportions of healthy people for city dwellers and non-city dwellers is the same.
+* H1 : The proportions of healthy people for city dwellers is greater than non-city dwellers 
+
+We use the in-built proprtion test in R:
+```{r }
+prop.test(x=c(city_success,non_city_success), n=c(total_city_dweller,total_non_city_dweller), alternative="greater")
+```
+Therefore, the p-value we get is very low. The difference in proportions for healthy people in city vs non-city settings is statistically significant. Therefore, we can safely say city dwellers are slightly more healthier than non-city dwellers which contradicts my initial assumption that non-city dwellers may ne more healthier.
+
+
+**Research quesion 2:**
+
+These are the following variable we need for our analysis:
+
+* *sex*
+* *_rfsmok3*: Current Smoking Calculated Variable
+* *_educag*: Computed Level Of Education Completed Categories
+
+Let us remove all the NAs from our dataset to make the analysis easier:
+```{r}
+remove_na<-(!is.na(brfss2013$X_educag)&!is.na(brfss2013$X_rfsmok3)&!is.na(brfss2013$sex))
+nrow(brfss2013)
+length(remove_na)
+brfss_cleaned <- brfss2013[remove_na,]
+```
+
+
+First, we summarise the X_educag variable. Then, we extract a new variable that tells us whether the person is a college graduate or not called *collegegrad*.
+```{r creating new combined variable collegegrad}
+brfss_cleaned%>% group_by(X_educag)%>%
+  summarise(total=n())
+brfss_cleaned<- brfss_cleaned%>%
+  mutate(collegegrad=ifelse(X_educag=="Graduated from college or technical school","Graduate","Non-graduate"))
+brfss_cleaned%>% group_by(collegegrad) %>%
+  summarise(total=n())
+```
+
+Now, we create a new categorical variable to make our analysis easier called *sex_collegegrad*. The categories will be as follows:
+
+* Male Graduates
+* Female Graduates
+* Male Non-graduates
+* Female Non-Graduates
+```{r creating new combined variable sex_collegegrad}
+#Creating a proportion table
+table1<-table(brfss_cleaned$sex, brfss_cleaned$collegegrad)
+prop.table(table1)
+brfss_cleaned<- brfss_cleaned %>%
+  mutate(sex_collegegrad=paste(sex,collegegrad))
+summary_sex_collegegrad<-brfss_cleaned %>% group_by(sex_collegegrad) %>%
+  summarise(total=n())%>%
+  mutate(proportion = total/sum(total)) 
+summary_sex_collegegrad[order(summary_sex_collegegrad$proportion),]
+
+
+```
+
+Now, we try to visualise what are our proportions of smokers vs non-smokers for different categories of *sex_collegegrad*. The weights shall be the number of people in each category of sex_collegegrad
+```{r mosaic plot for X_rfsmok3 vs collegegrad }
+table1<-table(brfss_cleaned$sex_collegegrad,brfss_cleaned$X_rfsmok3)
+mosaicplot(table1, main="Smokers vs Non Smokers for sex_collegegrad" ,color=TRUE)
+table2<-table(brfss_cleaned$sex, brfss_cleaned$collegegrad, brfss_cleaned$X_rfsmok3)
+mosaicplot(table2,main="Smokers vs Non Smokers categorised by sex and collegegrad", color=TRUE)
+
+```
+
+The answer to this question is again reverse to my assumption. It seems females and non-graduate overall have a higher smoking rate.
+
+**Research quesion 3:**
+
+For this question, we shall use the following variables:
+* *sex*
+* *_imprace*
+* *genhlth*
+* *_rfhlth*
+
+Clean all the NA data. Also, let's make a test mosaic plot
+```{r }
+brfss_cleaned_q3 <- brfss2013[!is.na(brfss2013$sex)&!is.na(brfss2013$X_imprace)&!is.na(brfss2013$genhlth),]
+table_q3<- table(brfss_cleaned_q3$X_imprace,brfss_cleaned_q3$sex,  brfss_cleaned_q3$genhlth)
+mosaicplot(table_q3, main="TEST plot", color = TRUE)
+
+```
+The above plot is very cramped and conveys very little information. It would be better to make mosaic plot for each race seperately to get a better insight along with proportions table.
+
+First, Let us separate the data for White, Non-Hispanic:
+```{r Plot and table for White, Non-Hispanic}
+brfss_white<-brfss_cleaned_q3 %>% filter(X_imprace=="White, Non-Hispanic") 
+table_white<- table(brfss_white$sex,  brfss_white$genhlth)
+mosaicplot(table_white, main="General Health for Male and Female Whites", color = TRUE, margin=TRUE)
+
+male_white_summary<-brfss_white %>% filter(sex=="Male") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(male_white_summary, caption = "Male White Health")
+
+female_white_summary<-brfss_white %>% filter(sex=="Female") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(female_white_summary, caption = "Female White Health")
+
+```
+Here, we can see that a large majority of both male and female whites are in good or better general health.
+
+Now, we investigate for all other races too:
+```{r Plots and tables for other races}
+brfss_black<-brfss_cleaned_q3 %>% filter(X_imprace=="Black, Non-Hispanic") 
+table_black<- table(brfss_black$sex,  brfss_black$genhlth)
+mosaicplot(table_black, main="General Health for Male and Female Blacks", color = TRUE, margin=TRUE)
+male_black_summary<-brfss_black %>% filter(sex=="Male") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(male_black_summary, caption = "Male Black Health")
+
+female_black_summary<-brfss_black %>% filter(sex=="Female") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(female_black_summary, caption = "Female Black Health")
+
+brfss_asian<-brfss_cleaned_q3 %>% filter(X_imprace=="Asian, Non-Hispanic") 
+table_asian<- table(brfss_asian$sex,  brfss_asian$genhlth)
+mosaicplot(table_asian, main="General Health for Male and Female Asians", color = TRUE, margin=TRUE)
+male_asian_summary<-brfss_asian %>% filter(sex=="Male") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(male_asian_summary, caption = "Male Asian Health")
+
+female_asian_summary<-brfss_asian %>% filter(sex=="Female") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(female_asian_summary, caption = "Female Asian Health")
+
+brfss_amerind<-brfss_cleaned_q3 %>% filter(X_imprace=="American Indian/Alaskan Native, Non-Hispanic") 
+table_amerind<- table(brfss_amerind$sex,  brfss_amerind$genhlth)
+mosaicplot(table_amerind, main="General Health for Male and Female Amerindian/Alaskan", color = TRUE, margin=TRUE)
+male_amerind_summary<-brfss_amerind %>% filter(sex=="Male") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(male_amerind_summary, caption = "Male Amerindian/Alaskan Health")
+
+female_amerind_summary<-brfss_amerind %>% filter(sex=="Female") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(female_amerind_summary, caption = "Female Amerindian/Alaskan Health")
+
+brfss_hisp<-brfss_cleaned_q3 %>% filter(X_imprace=="Hispanic") 
+table_hisp<- table(brfss_hisp$sex,  brfss_hisp$genhlth)
+mosaicplot(table_hisp, main="General Health for Male and Female Hispanic", color = TRUE, margin=TRUE)
+male_hisp_summary<-brfss_hisp %>% filter(sex=="Male") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(male_hisp_summary, caption = "Male Hispanic Health")
+
+female_hisp_summary<-brfss_hisp %>% filter(sex=="Female") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(female_hisp_summary, caption = "Female Hispanic Health")
+
+brfss_other<-brfss_cleaned_q3 %>% filter(X_imprace=="Other race, Non-Hispanic") 
+table_other<- table(brfss_other$sex,  brfss_other$genhlth)
+mosaicplot(table_other, main="General Health for Male and Female Other", color = TRUE, margin=TRUE)
+male_other_summary<-brfss_other %>% filter(sex=="Male") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(male_other_summary, caption = "Male Other Health")
+
+female_other_summary<-brfss_other %>% filter(sex=="Female") %>%
+  group_by(genhlth) %>%
+  summarise(total=n()) %>%
+  mutate(proportion = total/sum(total))
+kable(female_other_summary, caption = "Female Other Health")
+```
+
+Now, we have got a brief idea for all of the races. Let us summarise this by using a contingency table showing proportions for each category:
+```{r}
+x<-ftable(X_rfhlth~X_imprace+sex, data = brfss_cleaned_q3 )
+prop.table(x,margin=1)
+
+```
+From the contingency table, we are able to observe that Asian Females are amongst the most healthy (89.7%) and the least healthy are Hispanic Females (68.2%). Whites are after Asians in health.
+

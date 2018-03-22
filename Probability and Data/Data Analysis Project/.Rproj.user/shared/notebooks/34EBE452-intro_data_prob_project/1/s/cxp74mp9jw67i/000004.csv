@@ -1,0 +1,4 @@
+"0","brfss_cleaned<- brfss_cleaned%>%"
+"0","  mutate(collegegrad=ifelse(X_educag==""Graduated from college or technical school"",""Graduate"",""Non-graduate""))"
+"0","brfss_cleaned%>% group_by(collegegrad) %>%"
+"0","  summarise(total=n())"

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1521635625975.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2913576658",
+    "id" : "DD44F89C",
+    "lastKnownWriteTime" : 1521712034,
+    "last_content_update" : 1521712034621,
+    "path" : "~/Documents/Data Science References/Statistics with R Specialization/Probability and Data/Data Analysis Project/intro_data_prob_project_rev.Rmd",
+    "project_path" : "intro_data_prob_project_rev.Rmd",
+    "properties" : {
+        "cursorPosition" : "49,23",
+        "scrollLine" : "39"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,2 @@
+"0","# type your code for the Exercise here, and Run Document"
+"0","ggplot(data=samp1, aes(x=area)) + geom_histogram(binwidth = 250)"

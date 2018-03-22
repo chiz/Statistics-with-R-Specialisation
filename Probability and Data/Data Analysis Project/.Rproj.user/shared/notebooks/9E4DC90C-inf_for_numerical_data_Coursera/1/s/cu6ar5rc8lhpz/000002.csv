@@ -1,0 +1,3 @@
+"0","nc %>%"
+"0","  group_by(habit) %>%"
+"0","  summarise(mean_weight = mean(weight))"

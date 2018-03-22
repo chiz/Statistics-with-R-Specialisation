@@ -1,0 +1,17 @@
+"0","inference(y = weight, x = habit, data = nc, statistic = ""mean"", type = ""ht"", null = 0, "
+"0","          alternative = ""twosided"", method = ""theoretical"")"
+"1","Response variable: numerical
+"
+"1","Explanatory variable: categorical (2 levels) 
+"
+"1","n_nonsmoker = 873, y_bar_nonsmoker = 7.1443, s_nonsmoker = 1.5187
+"
+"1","n_smoker = 126, y_bar_smoker = 6.8287, s_smoker = 1.3862
+"
+"1","H0: mu_nonsmoker =  mu_smoker
+"
+"1","HA: mu_nonsmoker != mu_smoker
+"
+"1","t = 2.359, df = 125
+"
+"1","p_value = 0.0199"

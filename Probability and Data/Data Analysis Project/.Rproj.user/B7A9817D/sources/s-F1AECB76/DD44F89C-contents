@@ -1,0 +1,229 @@
+---
+title: "Exploring the BRFSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(reshape)
+library(knitr)
+```
+
+### Load data
+
+Loading data:
+
+```{r load-data}
+load("brfss2013.RData")
+```
+
+* * *
+
+## Part 1: Data
+
+The BRFSS is an observation project. Therefore, it is not possible to find out causality as it is not a controlled experiment and there is no random assignment.
+
+All 50 states, the District of Columbia, Puerto Rico, and Guam collect data annually and American Samoa, Federated States of Micronesia, and Palau collect survey data over a limited point- in-time (usually one to three months). Therefore, we have a *representative sample* including all US states and territories.
+
+The BRFSS counducts telephone interviews using *random* selection. The BRFSS also conducts cellphone interviews to include residences that do not have a landline number. 
+
+There is a **representative** sample from across the country and covering people with both landlines and cellphones. The samples are randomly selected by the researchers in each *"state"*. Therefore, there is random sampling. We can safely conclude that the study is **generalizable**.
+
+The only reservations are:
+
+* Citizens without cellphones and landlines may not be covered.
+* Homeless people may not be covered or hermits and monks living in the forest.
+
+* * *
+
+## Part 2: Research questions
+
+**Research quesion 1:**
+Are city dwellers healthier than their suburban and rural counterparts? 
+
+This question interests me because I assume that being outside the frantic hustle and bustle of city life outside work hours is conducive to mental and physical health. Although, it isn't the only factor. We may be able to draw correlations, we cannot establish causality as it is not a controlled experiment.
+
+**Research quesion 2:**
+Is there a difference in proportion of current smokers who are males who are graduates and non-graduate, females who are graduates and non-graduates?
+
+My initial assumption is that the group with the largest proportion of smokers would be male non-graduates followed by male graduates. An understanding of which demographic is likely to be a current smoker will help us create directed health outreach programs.
+
+**Research quesion 3:**
+Is there any relation between whether the person is healthy or not and race,sex?
+
+It would be interesting to understand the health status of people of different races, sex This might inform deeper experimental studies to understand what are the causes for the good and bad overall health for people belonging to a cerain race, sex
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+**Research quesion 1:**
+
+For this question, we make use of the following variables:
+
+* *mscode*: Metropolitan Status Code.
+* Calculated variable *X_rfhlth*: Adults With Good Or Better Health.
+
+The metropolitan status code has 5 levels
+
+1. In the center city of an MSA	
+2. Outside the center city of an MSA but inside the county containing the center city	
+3. Inside a suburban county of the MSA	
+4. In an MSA that has no center city	
+5. Not in an MSA
+
+We classify level 1 and 2 as city dweller and the others as not a city dweller. We, therefore create a new variable called *citydweller*. 
+
+Let us first explore *mscode* a bit.
+```{r values table for mscode}
+brfss2013%>% group_by(mscode) %>%
+  summarise(total=n())
+```
+
+Creating a new variable citydweller with levels "City Dweller" and "Not a City Dweller"
+
+```{r creating citydweller}
+mscode_levels<-levels(brfss2013$mscode)
+city1<-mscode_levels[1]
+city2<-mscode_levels[2]
+brfss2013<-brfss2013%>%
+  mutate(citydweller = ifelse(mscode==city1|mscode==city2,"City dweller","Not a city dweller") )
+```
+
+
+First, we plot a bar graph for each category of *citydweller*.
+```{r creating bar graph and summary statistics for city dweller vs not a city dweller}
+ggplot(data=brfss2013,aes(x=citydweller))+geom_bar(fill=c("#fabfab","#a4d3ee","#40e0d0") )+ ggtitle("Bar diagram showing whether a person lives in the city")
+```
+
+There quite a few NA values. We filter out all NA values from citydweller and X_rfhlth columns before displaying summary statistics.
+
+```{r creating summary statistics}
+brfss_cleaned_q1<-brfss2013%>%filter(!is.na(citydweller), !is.na(X_rfhlth)) 
+brfss_cleaned_q1%>%group_by(citydweller)%>%
+  summarise(total=n())%>%
+  mutate(proportion=total/sum(total))
+```
+There is an even split between city dwellers and not a city dweller.
+
+Now, we construct summary statistics for health.
+```{r Bar plot for the health of city dwellers}
+brfss_cleaned_q1 %>% group_by(X_rfhlth) %>%
+  summarise(total=n())%>%
+  mutate(proportion=total/sum(total))
+```
+We can conclude from the summary statistics that 79.68% are in good or better health; and 20.32 % are in fair or poor health from the undifferentiated sample.
+
+Now, let us investigate summary statistics for health split by citydweller status:
+```{r Bar plot and summary statistic for non-city dwellers}
+q1_summary<-brfss_cleaned_q1%>% group_by(citydweller, X_rfhlth) %>%
+  summarise(total=n())%>%
+  mutate(proportion= total/sum(total))
+q1_summary<-data.frame(q1_summary)
+q1_summary
+```
+It seems non-city dwellers have a slightly lower proportion of healthy individuals compared to city dwellers i.e 0.784438 (non-city) vs 0.8098015 (city). However, the difference is not that large.
+
+For better illustration, we create a bar chart:
+```{r Plotting bar chart}
+ggplot(q1_summary, aes(x=citydweller, y=proportion, fill=X_rfhlth)) +geom_bar(stat="identity")
+```
+
+Therefore, we can conclude city dwellers are somewhat more healthy. Although, we will have to perform further tests to find out whether the difference is statistically significant.
+
+
+**Research quesion 2:**
+
+These are the following variable we need for our analysis:
+
+* *sex*
+* *X_rfsmok3*: Current Smoking Calculated Variable
+* *X_educag*: Computed Level Of Education Completed Categories
+
+Let us remove all the NAs from our dataset to make the analysis easier:
+```{r}
+brfss_cleaned_q2<-brfss2013 %>% filter( !is.na(X_educag), !is.na(X_rfsmok3), !is.na(sex) )
+```
+
+The X_educag variable has following levels:
+
+1. Did not graduate High School 
+2. Graduated High School 
+3. Attended College or Technical School 
+4. Graduated from College or Technical School 
+
+Only the last level are college graduates.
+
+We extract a new variable from X_educag that tells us whether the person is a college graduate or not called *collegegrad*. We then create summary statistics:
+```{r}
+brfss_cleaned_q2<- brfss_cleaned_q2%>%
+  mutate(collegegrad=ifelse(X_educag=="Graduated from college or technical school","Graduate","Non-graduate"))
+brfss_cleaned_q2%>% group_by(collegegrad) %>%
+  summarise(total=n()) %>%
+  mutate(percentage= total/sum(total)*100)
+```
+We can see from the summary statistics that 34.9% are college graduate and the remaining 65.1% are not.
+
+We create summary statistics for smokers according to sex and graduation status
+```{r creating new combined variable sex_collegegrad}
+#Creating a proportion table
+
+summary_sex_collegegrad<-brfss_cleaned_q2 %>% group_by(sex, collegegrad, X_rfsmok3) %>%
+  summarise(total=n()) %>%
+  mutate(percentage=total/sum(total)*100)
+summary_sex_collegegrad
+```
+From the summary statistics, we see that female graduates have the lowest prevalence of smokers (7.48%), followed by male graduates (8,1%), femalo non-graduates (18.63%) and male non-graduates (23.58%) Therefore, we can also conclude that the main explanatory variable is graduation status rather than gender.
+
+```{r mosaic plot for X_rfsmok3 vs collegegrad }
+table2<-table(brfss_cleaned_q2$sex, brfss_cleaned_q2$collegegrad, brfss_cleaned_q2$X_rfsmok3)
+mosaicplot(table2,main="Smokers vs Non Smokers categorised by sex and collegegrad", color=c("#cc637c", "#1b9ea9"))
+
+
+
+```
+
+Here, we can succinctly visualise the summary statistics using a mosaic plot. As we can see, the non-graduates form the bulk of the smokers. The more important factor to determine whther a person is a smoker seems to be education level and not so much sex.
+
+**Research quesion 3:**
+
+For this question, we shall use the following variables:
+* *sex*
+* *X_imprace*
+* *X_rfhlth*
+
+We first clean all the NAs from the data. Then we summarise according to health status.
+```{r}
+brfss_cleaned_q3 <-brfss2013 %>%
+  filter(!is.na(sex),!is.na(X_imprace),!is.na(X_rfhlth))
+brfss_cleaned_q3%>%group_by(X_rfhlth)%>%
+  summarise(total=n())%>%
+  mutate(proportion=total/sum(total))
+```
+For the overall sample, we can summarise that around 81% of the population is healthy while around 19% are not.
+
+We now create a summary statistics grouping on the basis of race as wells as sex:
+```{r}
+summary_q3<-brfss_cleaned_q3%>%group_by(X_imprace, sex, X_rfhlth) %>%
+  summarise(total=n())%>%
+  mutate(percentage=total/sum(total)*100)
+summary_q3
+```
+Clearly, there is some variation in the health status with race. Therefore, race seems to be correlated to health status. On the other hand, the variation of health status with sex is less prominent.
+
+```{r}
+ggplot(summary_q3, aes(x=sex,y=percentage, fill=X_rfhlth)) +geom_col() +facet_wrap(~X_imprace)
+
+```
+
+From the above summary statistics and plot, we can clearly see that Asians have the best overall health (89%) followed by Whites (82-83%). The category with the worst overall health is Hispanic Females (68%). Interesetingly, we can see that the general health varies with sex only for black and hispanics. For other races, the variation in health according to sex does not seem very significant. 
+However, a deeper statistical study can only confirm statistical significance.

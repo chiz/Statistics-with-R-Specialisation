@@ -1,0 +1,3 @@
+"0","non_city_total_summary<-non_city_dweller_data[!is.na(non_city_dweller_data$X_rfhlth),]%>% group_by(X_rfhlth) %>%"
+"0","  summarise(total=n())"
+"0","non_city_total_summary"

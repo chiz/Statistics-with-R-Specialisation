@@ -1,0 +1,5 @@
+"0","male_white_summary<-brfss_white %>% filter(sex==""Male"") %>%"
+"0","  group_by(genhlth) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(proportion = total/sum(total))"
+"0","kable(male_white_summary, caption = ""Male White Health"")"

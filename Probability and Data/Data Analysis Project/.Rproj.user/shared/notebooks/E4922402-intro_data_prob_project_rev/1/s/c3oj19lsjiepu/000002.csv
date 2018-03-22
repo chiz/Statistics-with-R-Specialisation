@@ -1,0 +1,5 @@
+"0","#Creating a proportion table"
+"0","summary_sex_collegegrad<-brfss_cleaned_q2 %>% group_by(sex, collegegrad, X_rfsmok3) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(percentage=total/sum(total)*100)"
+"0","summary_sex_collegegrad"

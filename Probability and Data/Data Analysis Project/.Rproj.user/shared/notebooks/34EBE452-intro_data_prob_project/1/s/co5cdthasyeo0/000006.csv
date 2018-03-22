@@ -1,0 +1,3 @@
+"0","total_city_dweller= sum(!is.na(city_dweller_data$X_rfhlth))"
+"0","city_dweller_data[!is.na(city_dweller_data$X_rfhlth),] %>% group_by(X_rfhlth) %>%"
+"0","  summarise(proportion= n()/total_city_dweller)"

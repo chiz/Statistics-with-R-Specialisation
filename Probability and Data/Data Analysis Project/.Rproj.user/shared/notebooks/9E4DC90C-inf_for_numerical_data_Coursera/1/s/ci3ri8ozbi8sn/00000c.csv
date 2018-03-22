@@ -1,0 +1,9 @@
+"0","# type your code for Question 6 here, and Knit"
+"0","inference(y=weeks, data = nc, type = ""ci"", statistic = ""mean"","
+"0","          method = ""theoretical"", alternative = ""twosided"",conf_level = 0.99)"
+"1","Single numerical variable
+"
+"1","n = 998, y-bar = 38.3347, s = 2.9316
+"
+"1","99% CI: (38.0952 , 38.5742)
+"

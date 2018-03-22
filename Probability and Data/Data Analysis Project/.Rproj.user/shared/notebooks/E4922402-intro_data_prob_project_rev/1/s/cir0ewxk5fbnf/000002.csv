@@ -1,0 +1,4 @@
+"0","brfss_cleaned_q1<-brfss2013%>%filter(!is.na(citydweller), !is.na(X_rfhlth)) "
+"0","brfss_cleaned_q1%>%group_by(citydweller)%>%"
+"0","  summarise(total=n())%>%"
+"0","  mutate(proportion=total/sum(total))"

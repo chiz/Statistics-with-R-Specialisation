@@ -1,0 +1,5 @@
+"0","mscode_levels<-levels(brfss2013$mscode)"
+"0","city1<-mscode_levels[1]"
+"0","city2<-mscode_levels[2]"
+"0","brfss2013<-brfss2013%>%"
+"0","  mutate(citydweller = ifelse(mscode==city1|mscode==city2,""City dweller"",""Not a city dweller"") )"

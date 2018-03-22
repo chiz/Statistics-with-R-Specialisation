@@ -1,0 +1,2 @@
+"0","# type your code for the Exercise here, and Knit"
+"0","ggplot(samp, aes(x=area)) + geom_histogram(binwidth = 100)"

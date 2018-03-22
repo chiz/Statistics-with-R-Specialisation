@@ -1,0 +1,19 @@
+"0","# type your code for the Exercise here, and Knit"
+"0","inference(y=gained, x=mature,data = nc, type = ""ht"", "
+"0","          statistic = ""mean"", method = ""theoretical"", alternative = ""twosided"" )"
+"2","Missing null value, set to 0"
+"1","Response variable: numerical
+"
+"1","Explanatory variable: categorical (2 levels) 
+"
+"1","n_mature mom = 129, y_bar_mature mom = 28.7907, s_mature mom = 13.4824
+"
+"1","n_younger mom = 844, y_bar_younger mom = 30.5604, s_younger mom = 14.3469
+"
+"1","H0: mu_mature mom =  mu_younger mom
+"
+"1","HA: mu_mature mom != mu_younger mom
+"
+"1","t = -1.3765, df = 128
+"
+"1","p_value = 0.1711"

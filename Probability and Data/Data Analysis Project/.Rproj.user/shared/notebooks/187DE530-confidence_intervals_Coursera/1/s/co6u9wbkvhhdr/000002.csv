@@ -1,0 +1,2 @@
+"0","n <- 60"
+"0","samp <- sample_n(ames, n)"

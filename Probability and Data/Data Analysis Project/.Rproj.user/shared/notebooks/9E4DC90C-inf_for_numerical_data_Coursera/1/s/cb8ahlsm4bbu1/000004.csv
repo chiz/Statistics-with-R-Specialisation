@@ -1,0 +1,2 @@
+"0","# type your code for the Question 3 here, and Knit"
+"0","boxplot(weight~habit, data=nc)"

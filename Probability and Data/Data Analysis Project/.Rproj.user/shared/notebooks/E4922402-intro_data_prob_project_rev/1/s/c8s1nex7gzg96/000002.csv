@@ -1,0 +1,5 @@
+"0","q1_summary<-brfss_cleaned_q1%>% group_by(citydweller, X_rfhlth) %>%"
+"0","  summarise(total=n())%>%"
+"0","  mutate(proportion= total/sum(total))"
+"0","q1_summary<-data.frame(q1_summary)"
+"0","q1_summary"

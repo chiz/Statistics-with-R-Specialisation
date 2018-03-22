@@ -1,0 +1,1 @@
+"0","brfss_cleaned_q2<-brfss2013 %>% filter( !is.na(X_educag), !is.na(X_rfsmok3), !is.na(sex) )"

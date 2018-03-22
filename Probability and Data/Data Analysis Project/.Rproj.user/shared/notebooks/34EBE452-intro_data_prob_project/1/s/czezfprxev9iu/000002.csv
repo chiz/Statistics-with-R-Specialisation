@@ -1,0 +1,3 @@
+"0","non_city_dweller_data<-brfss2013%>%"
+"0","  filter(citydweller==""Not a city dweller"")"
+"0","ggplot(non_city_dweller_data, aes(x=X_rfhlth)) +geom_bar() + ggtitle(""Bar plot concerning health of non-city dwellers"")"

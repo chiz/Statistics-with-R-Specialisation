@@ -1,0 +1,3 @@
+"0","brfss_hisp<-brfss_cleaned_q3 %>% filter(X_imprace==""Hispanic"") "
+"0","table_hisp<- table(brfss_hisp$sex,  brfss_hisp$genhlth)"
+"0","mosaicplot(table_hisp, main=""General Health for Male and Female Hispanic"", color = TRUE, margin=TRUE)"

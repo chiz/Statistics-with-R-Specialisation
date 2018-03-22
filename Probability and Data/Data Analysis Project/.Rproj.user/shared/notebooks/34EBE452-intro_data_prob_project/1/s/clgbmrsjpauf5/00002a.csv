@@ -1,0 +1,5 @@
+"0","female_asian_summary<-brfss_asian %>% filter(sex==""Female"") %>%"
+"0","  group_by(genhlth) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(proportion = total/sum(total))"
+"0","kable(female_asian_summary, caption = ""Female Asian Health"")"

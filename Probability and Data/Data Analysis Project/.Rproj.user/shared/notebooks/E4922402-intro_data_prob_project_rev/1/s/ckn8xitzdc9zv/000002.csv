@@ -1,0 +1,3 @@
+"0","brfss_cleaned_q1 %>% group_by(X_rfhlth) %>%"
+"0","  summarise(total=n())%>%"
+"0","  mutate(proportion=total/sum(total))"

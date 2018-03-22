@@ -1,0 +1,5 @@
+"0","female_amerind_summary<-brfss_amerind %>% filter(sex==""Female"") %>%"
+"0","  group_by(genhlth) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(proportion = total/sum(total))"
+"0","kable(female_amerind_summary, caption = ""Female Amerindian/Alaskan Health"")"

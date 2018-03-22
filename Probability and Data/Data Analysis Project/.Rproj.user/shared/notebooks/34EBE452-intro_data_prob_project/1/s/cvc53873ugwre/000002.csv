@@ -1,0 +1,3 @@
+"0","brfss_white<-brfss_cleaned_q3 %>% filter(X_imprace==""White, Non-Hispanic"") "
+"0","table_white<- table(brfss_white$sex,  brfss_white$genhlth)"
+"0","mosaicplot(table_white, main=""General Health for Male and Female Whites"", color = TRUE, margin=TRUE)"

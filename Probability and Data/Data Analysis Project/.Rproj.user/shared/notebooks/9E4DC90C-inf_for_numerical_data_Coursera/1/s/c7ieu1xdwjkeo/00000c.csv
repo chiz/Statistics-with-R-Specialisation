@@ -1,0 +1,8 @@
+"0","# type your code for the Exercise here, and Knit"
+"0","inference(y=weeks, data=nc, type=""ci"", conf_level = 0.9, method = ""theoretical"", statistic = ""mean"")"
+"1","Single numerical variable
+"
+"1","n = 998, y-bar = 38.3347, s = 2.9316
+"
+"1","90% CI: (38.1819 , 38.4874)
+"

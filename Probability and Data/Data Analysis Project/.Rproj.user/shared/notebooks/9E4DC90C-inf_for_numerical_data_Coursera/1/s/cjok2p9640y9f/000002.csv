@@ -1,0 +1,3 @@
+"0","# type your code for Question 7 here, and Knit"
+"0","nc %>% group_by(mature) %>%"
+"0","  summarise(max_age=max(mage), min_age=min(mage))"

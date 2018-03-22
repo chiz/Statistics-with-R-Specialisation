@@ -1,0 +1,2 @@
+"0","ci <- ci %>%"
+"0","  mutate(capture_mu = ifelse(lower < params$mu & upper > params$mu, ""yes"", ""no""))"

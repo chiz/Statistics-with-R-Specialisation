@@ -1,0 +1,3 @@
+"0","brfss_cleaned_q3 <- brfss2013[!is.na(brfss2013$sex)&!is.na(brfss2013$X_imprace)&!is.na(brfss2013$genhlth),]"
+"0","table_q3<- table(brfss_cleaned_q3$X_imprace,brfss_cleaned_q3$sex,  brfss_cleaned_q3$genhlth)"
+"0","mosaicplot(table_q3, main=""TEST plot"", color = TRUE)"

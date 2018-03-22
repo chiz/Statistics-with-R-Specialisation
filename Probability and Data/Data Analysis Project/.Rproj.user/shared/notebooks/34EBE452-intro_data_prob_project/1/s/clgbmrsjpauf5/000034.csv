@@ -1,0 +1,5 @@
+"0","male_hisp_summary<-brfss_hisp %>% filter(sex==""Male"") %>%"
+"0","  group_by(genhlth) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(proportion = total/sum(total))"
+"0","kable(male_hisp_summary, caption = ""Male Hispanic Health"")"

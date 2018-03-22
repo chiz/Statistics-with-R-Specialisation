@@ -1,0 +1,4 @@
+"0","# type your code for the Exercise here, and Knit"
+"0","nc%>% group_by(whitemom,marital) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(percentage=total/sum(total))"

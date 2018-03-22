@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1521546879731.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A4C02B69",
+    "lastKnownWriteTime" : 1521044891,
+    "last_content_update" : 1521663032652,
+    "path" : "~/Documents/Data Science References/Statistics with R Specialization/Inferential Statistics/sampling_distributions_Coursera.rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "23,14",
+        "scrollLine" : "6"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

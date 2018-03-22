@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1521713664628.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "235408682",
+    "id" : "A24039C7",
+    "lastKnownWriteTime" : 1521722817,
+    "last_content_update" : 1521722817313,
+    "path" : "~/Documents/Data Science References/Statistics with R Specialization/Inferential Statistics/inf_for_numerical_data_Coursera.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "275,8",
+        "scrollLine" : "264"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

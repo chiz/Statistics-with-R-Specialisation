@@ -1,0 +1,2 @@
+"0","table2<-table(brfss_cleaned$sex, brfss_cleaned$collegegrad, brfss_cleaned$X_rfsmok3)"
+"0","mosaicplot(table2,main=""Smokers vs Non Smokers categorised by sex and collegegrad"", color=TRUE)"

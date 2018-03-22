@@ -1,0 +1,2 @@
+"0","brfss2013[!is.na(brfss2013$citydweller),]%>%group_by(citydweller)%>%"
+"0","  summarise(total=n())"

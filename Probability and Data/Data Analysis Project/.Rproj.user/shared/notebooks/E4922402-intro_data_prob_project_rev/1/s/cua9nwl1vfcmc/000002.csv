@@ -1,0 +1,5 @@
+"0","brfss_cleaned_q2<- brfss_cleaned_q2%>%"
+"0","  mutate(collegegrad=ifelse(X_educag==""Graduated from college or technical school"",""Graduate"",""Non-graduate""))"
+"0","brfss_cleaned_q2%>% group_by(collegegrad) %>%"
+"0","  summarise(total=n()) %>%"
+"0","  mutate(percentage= total/sum(total)*100)"

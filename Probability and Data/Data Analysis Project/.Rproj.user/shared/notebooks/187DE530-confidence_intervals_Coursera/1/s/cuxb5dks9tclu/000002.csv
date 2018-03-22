@@ -1,0 +1,4 @@
+"0","ci <- ames %>%"
+"0","        rep_sample_n(size = n, reps = 50, replace = TRUE) %>%"
+"0","        summarise(lower = mean(area) - z_star_95 * (sd(area) / sqrt(n)),"
+"0","                  upper = mean(area) + z_star_95 * (sd(area) / sqrt(n)))"

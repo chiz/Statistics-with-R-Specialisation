@@ -1,0 +1,1 @@
+"0","ggplot(q1_summary, aes(x=citydweller, y=proportion, fill=X_rfhlth)) +geom_bar(stat=""identity"")"
